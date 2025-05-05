@@ -1,10 +1,10 @@
-package jp.harucraft.listener;
+package jp.haruserver.mc.listener;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerEggThrowEvent;
 
-import jp.harucraft.HCPokeBall;
+import jp.haruserver.mc.HCPokeBall;
 import net.md_5.bungee.api.ChatColor;
 
 public class PlayerThrowEggListener implements Listener{

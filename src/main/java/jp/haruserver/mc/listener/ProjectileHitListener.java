@@ -1,4 +1,4 @@
-package jp.harucraft.listener;
+package jp.haruserver.mc.listener;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 
-import jp.harucraft.HCPokeBall;
-import jp.harucraft.util.ItemManager;
+import jp.haruserver.mc.HCPokeBall;
+import jp.haruserver.mc.util.ItemManager;
 import net.md_5.bungee.api.ChatColor;
 
 public class ProjectileHitListener implements Listener{

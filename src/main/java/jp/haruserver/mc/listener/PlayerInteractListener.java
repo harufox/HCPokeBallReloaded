@@ -1,4 +1,4 @@
-package jp.harucraft.listener;
+package jp.haruserver.mc.listener;
 
 import org.bukkit.event.Listener;
 

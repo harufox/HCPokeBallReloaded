@@ -1,4 +1,4 @@
-package jp.harucraft;
+package jp.haruserver.mc;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -16,12 +16,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import jp.harucraft.listener.HCPokeBallCommands;
-import jp.harucraft.listener.PlayerInteractListener;
-import jp.harucraft.listener.PlayerThrowEggListener;
-import jp.harucraft.listener.ProjectileHitListener;
-import jp.harucraft.listener.ProjectileLaunchListener;
-import jp.harucraft.util.ItemManager;
+import jp.haruserver.mc.listener.HCPokeBallCommands;
+import jp.haruserver.mc.listener.PlayerInteractListener;
+import jp.haruserver.mc.listener.PlayerThrowEggListener;
+import jp.haruserver.mc.listener.ProjectileHitListener;
+import jp.haruserver.mc.listener.ProjectileLaunchListener;
+import jp.haruserver.mc.util.ItemManager;
 import net.md_5.bungee.api.ChatColor;
 
 public class HCPokeBall  extends JavaPlugin{

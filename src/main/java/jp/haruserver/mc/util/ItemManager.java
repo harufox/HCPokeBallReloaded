@@ -1,4 +1,4 @@
-package jp.harucraft.util;
+package jp.haruserver.mc.util;
 
 import java.util.Arrays;
 
