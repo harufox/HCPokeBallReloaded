@@ -21,6 +21,8 @@ import jp.haruserver.mc.hcpokeball.registry.CaptureHandlerRegistry;
 import jp.haruserver.mc.hcpokeball.util.ItemManager;
 import jp.haruserver.mc.hcpokeball.util.PokeBallKeys;
 import jp.haruserver.mc.hcpokeball.util.mapper.EggMaterialMapper;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.md_5.bungee.api.ChatColor;
 
 public class ProjectileHitListener implements Listener {
@@ -35,20 +37,23 @@ public class ProjectileHitListener implements Listener {
     public void onPokeBallHit(ProjectileHitEvent e) {
         // プレイヤーが投げた弾か判定
         if (!(e.getEntity().getShooter() instanceof Player)) return;
-        // 卵型の弾（ポケボール）であるか判定
+        // 卵であるか判定
         if (!(e.getEntity() instanceof Egg)) return;
 
         Player player = (Player) e.getEntity().getShooter();
         Egg egg = (Egg) e.getEntity();
         PokeBallKeys pokeBallKeys = plugin.getPokeBallKeys();
 
-        // 発射体にオーナーUUIDがあるか確認（安全対策）
+        // 発射体にオーナーUUIDがあるか確認
         if (!pokeBallKeys.hasProjectileOwnerUUID(egg)) return;
 
         // UUIDが本人と一致するか（他人のボールによる干渉を防ぐ）
         String playerUUID = player.getUniqueId().toString();
         String projectileOwnerUUID = pokeBallKeys.getProjectileOwnerUUID(egg);
-        if (!playerUUID.equals(projectileOwnerUUID)) return;
+        if (!playerUUID.equals(projectileOwnerUUID)){
+			player.sendMessage(Component.text("あなたのPokeBallではありません",NamedTextColor.AQUA));
+			return;
+		}
 
         // 捕獲済みかどうかで分岐（NBTにjsonが入っているか）
         if (pokeBallKeys.hasProjectileNbtString(egg)) {
