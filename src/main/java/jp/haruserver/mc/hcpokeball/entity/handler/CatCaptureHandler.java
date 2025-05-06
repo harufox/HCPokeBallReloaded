@@ -1,33 +1,34 @@
 package jp.haruserver.mc.hcpokeball.entity.handler;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Cat;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Wolf;
+
 import com.google.gson.Gson;
 
 import jp.haruserver.mc.hcpokeball.contract.EntityCaptureHandler;
 import jp.haruserver.mc.hcpokeball.contract.EntityData;
-import jp.haruserver.mc.hcpokeball.entity.data.WolfData;
+import jp.haruserver.mc.hcpokeball.entity.data.CatData;
 
-public class WolfCaptureHandler implements EntityCaptureHandler<Wolf> {
+public class CatCaptureHandler implements EntityCaptureHandler<Cat>{
 
     @Override
     public boolean supports(Entity entity) {
-        return entity instanceof Wolf;
+        return entity instanceof Cat;
     }
 
     @Override
-    public String serialize(Wolf entity) {
-        WolfData data = WolfData.fromEntity(entity);
+    public String serialize(Cat entity) {
+        CatData data = CatData.fromEntity(entity);
         return new Gson().toJson(data);
     }
 
     @Override
     public Material getEggMaterial() {
-        return Material.WOLF_SPAWN_EGG;
+        return Material.CAT_SPAWN_EGG;
     }
     @Override
     public EntityData deserialize(String json) {
-        return new Gson().fromJson(json, WolfData.class);
+        return new Gson().fromJson(json, CatData.class);
     }
 }

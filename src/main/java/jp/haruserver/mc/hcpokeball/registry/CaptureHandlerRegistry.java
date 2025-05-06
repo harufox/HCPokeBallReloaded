@@ -4,6 +4,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
 import jp.haruserver.mc.hcpokeball.contract.EntityCaptureHandler;
+import jp.haruserver.mc.hcpokeball.entity.handler.CatCaptureHandler;
 import jp.haruserver.mc.hcpokeball.entity.handler.WolfCaptureHandler;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ public class CaptureHandlerRegistry {
 
     static {
         handlerMap.put(EntityType.WOLF, new WolfCaptureHandler());
+        handlerMap.put(EntityType.CAT, new CatCaptureHandler());
     }
 
     public static EntityCaptureHandler<? extends Entity> getHandler(EntityType type) {

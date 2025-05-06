@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.haruserver.mc.hcpokeball.contract.EntityData;
+import jp.haruserver.mc.hcpokeball.entity.data.CatData;
 import jp.haruserver.mc.hcpokeball.entity.data.WolfData;
 
 public class EntityDataRegistry {
@@ -11,6 +12,7 @@ public class EntityDataRegistry {
 
     static {
         register("WOLF", WolfData.class);
+        register("CAT", CatData.class);
     }
 
     public static void register(String type, Class<? extends EntityData> clazz) {
