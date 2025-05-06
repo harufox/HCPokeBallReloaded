@@ -10,8 +10,6 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 
 import jp.haruserver.mc.hcpokeball.HCPokeBall;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import jp.haruserver.mc.hcpokeball.util.PokeBallKeys;
 
 public class PlayerProjectileLaunchListener implements Listener{
@@ -33,7 +31,6 @@ public class PlayerProjectileLaunchListener implements Listener{
         if (!(projectile.getShooter() instanceof Player)) return;
 
         Player player = (Player) projectile.getShooter();
-        player.sendMessage(Component.text("LaunchEvent発火",NamedTextColor.GRAY));
         ItemStack playerHand = player.getInventory().getItemInMainHand();
 
         //卵を使う以外で卵が飛んだ想定

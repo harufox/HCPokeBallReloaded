@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -38,7 +41,6 @@ public class ProjectileHitListener implements Listener {
         // プレイヤーが投げた弾か判定
         if (!(e.getEntity().getShooter() instanceof Player)) return;
         Player player = (Player) e.getEntity().getShooter();
-		player.sendMessage(Component.text("ヒットイベント発火",NamedTextColor.GRAY));
         // 卵であるか判定
         if (!(e.getEntity() instanceof Egg)) return;
         Egg egg = (Egg) e.getEntity();
@@ -46,7 +48,6 @@ public class ProjectileHitListener implements Listener {
 
         // 発射体にオーナーUUIDがあるか確認
         if (!pokeBallKeys.hasProjectileOwnerUUID(egg)) return;
-		player.sendMessage(Component.text("ヒットイベントオーナーUUIDチェック",NamedTextColor.GRAY));
         // UUIDが本人と一致するか（他人のボールによる干渉を防ぐ）
         String playerUUID = player.getUniqueId().toString();
         String projectileOwnerUUID = pokeBallKeys.getProjectileOwnerUUID(egg);
@@ -150,6 +151,7 @@ public class ProjectileHitListener implements Listener {
 
 		// 着弾地点にスポーンさせる
 		Location spawnLoc = egg.getLocation().add(0, 0.5, 0);
+		World spawnWorld = spawnLoc.getWorld();
 		
 		// エンティティをスポーン
 		Entity spawnedEntity = spawnLoc.getWorld().spawn(spawnLoc, entityType.getEntityClass());
@@ -161,6 +163,13 @@ public class ProjectileHitListener implements Listener {
 
 		entityData.applyTo(spawnedEntity);
 		player.sendMessage(ChatColor.GREEN + entityData.getType() + " を呼び出した！");
+		spawnWorld.spawnParticle(Particle.EXPLOSION, spawnLoc, 10);
+		spawnWorld.spawnParticle(Particle.SMOKE, spawnLoc, 20, 0.2, 0.2, 0.2, 0.01);
+		spawnWorld.spawnParticle(Particle.FIREWORK, spawnLoc, 20, 0.2, 0.4, 0.2, 0.05);
+		spawnWorld.spawnParticle(Particle.END_ROD, spawnLoc, 30, 0.2, 0.5, 0.2, 0.01);
+		spawnWorld.playSound(spawnLoc, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1.0f, 1.2f);
+		spawnWorld.playSound(spawnLoc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.8f, 2.0f); // ウィーン音に近い
+		spawnWorld.playSound(spawnLoc, Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.5f); // 高音の起動音
 	}
 
     /**

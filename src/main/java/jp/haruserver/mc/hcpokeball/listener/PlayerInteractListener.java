@@ -31,7 +31,6 @@ public class PlayerInteractListener implements Listener{
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerEggUseUse(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        player.sendMessage(Component.text("Interact発火",NamedTextColor.AQUA));
 
         ItemStack item = event.getItem();
     
