@@ -37,16 +37,16 @@ public class ProjectileHitListener implements Listener {
     public void onPokeBallHit(ProjectileHitEvent e) {
         // プレイヤーが投げた弾か判定
         if (!(e.getEntity().getShooter() instanceof Player)) return;
+        Player player = (Player) e.getEntity().getShooter();
+		player.sendMessage(Component.text("ヒットイベント発火",NamedTextColor.GRAY));
         // 卵であるか判定
         if (!(e.getEntity() instanceof Egg)) return;
-
-        Player player = (Player) e.getEntity().getShooter();
         Egg egg = (Egg) e.getEntity();
         PokeBallKeys pokeBallKeys = plugin.getPokeBallKeys();
 
         // 発射体にオーナーUUIDがあるか確認
         if (!pokeBallKeys.hasProjectileOwnerUUID(egg)) return;
-
+		player.sendMessage(Component.text("ヒットイベントオーナーUUIDチェック",NamedTextColor.GRAY));
         // UUIDが本人と一致するか（他人のボールによる干渉を防ぐ）
         String playerUUID = player.getUniqueId().toString();
         String projectileOwnerUUID = pokeBallKeys.getProjectileOwnerUUID(egg);
@@ -148,19 +148,18 @@ public class ProjectileHitListener implements Listener {
 			return;
 		}
 
-		// プレイヤーの少し前にスポーン（向きに応じて位置調整しても良い）
-		Location spawnLoc = player.getLocation().add(0, 0.5, 0);
-
+		// 着弾地点にスポーンさせる
+		Location spawnLoc = egg.getLocation().add(0, 0.5, 0);
+		
 		// エンティティをスポーン
 		Entity spawnedEntity = spawnLoc.getWorld().spawn(spawnLoc, entityType.getEntityClass());
 
 		// データ適用
-		if (entityData instanceof Tameable && spawnedEntity instanceof Tameable) {
+		if (spawnedEntity instanceof Tameable) {
 			((Tameable) spawnedEntity).setOwner(player);
 		}
 
 		entityData.applyTo(spawnedEntity);
-
 		player.sendMessage(ChatColor.GREEN + entityData.getType() + " を呼び出した！");
 	}
 

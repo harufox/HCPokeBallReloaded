@@ -16,7 +16,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import jp.haruserver.mc.hcpokeball.listener.HCPokeBallCommands;
 import jp.haruserver.mc.hcpokeball.listener.PlayerCraftItemListener;
 import jp.haruserver.mc.hcpokeball.listener.PlayerEggThrowListener;
+import jp.haruserver.mc.hcpokeball.listener.PlayerInteractEntityListener;
+import jp.haruserver.mc.hcpokeball.listener.PlayerInteractListener;
 import jp.haruserver.mc.hcpokeball.listener.PlayerJoinListener;
+import jp.haruserver.mc.hcpokeball.listener.PlayerProjectileLaunchListener;
 import jp.haruserver.mc.hcpokeball.listener.ProjectileHitListener;
 import jp.haruserver.mc.hcpokeball.util.CustomConfig;
 import jp.haruserver.mc.hcpokeball.util.ItemManager;
@@ -47,7 +50,10 @@ public class HCPokeBall  extends JavaPlugin{
 		pm.registerEvents(new PlayerJoinListener(this),this);
 		pm.registerEvents(new PlayerCraftItemListener(this), this);
 		pm.registerEvents(new PlayerEggThrowListener(this), this);
-		
+		pm.registerEvents(new PlayerProjectileLaunchListener(this), this);
+		pm.registerEvents(new PlayerInteractListener(this), this);
+		pm.registerEvents(new PlayerInteractEntityListener(this), this);
+
 		//コマンド登録
 		HCPokeBallCommands executer = new HCPokeBallCommands(this);
 		getCommand("hcpb").setExecutor(executer);

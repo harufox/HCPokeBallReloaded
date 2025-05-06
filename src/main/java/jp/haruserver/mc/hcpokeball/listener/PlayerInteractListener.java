@@ -30,9 +30,9 @@ public class PlayerInteractListener implements Listener{
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerEggUseUse(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-
         Player player = event.getPlayer();
+        player.sendMessage(Component.text("Interact発火",NamedTextColor.AQUA));
+
         ItemStack item = event.getItem();
     
         //何も持っていないかチェック
@@ -41,6 +41,13 @@ public class PlayerInteractListener implements Listener{
         PokeBallKeys pokeBallKeys = plugin.getPokeBallKeys();
         //OwnerUUIDがあるかチェック
         if(!pokeBallKeys.hasOwnerUUID(item)) return;
+        
+        if(!(item.getType().equals(Material.EGG))){
+            event.setCancelled(true);
+        }
+
+
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
         String playerUUID = player.getUniqueId().toString();
         String ownerUUID = pokeBallKeys.getOwnerUUID(item);
@@ -54,8 +61,6 @@ public class PlayerInteractListener implements Listener{
         Material itemType = item.getType();
         //スポーンエッグの場合
         if (itemType.name().endsWith("_SPAWN_EGG")){
-            // イベントキャンセルしてスポーン阻止
-            event.setCancelled(true);
             playerThrowSpawnEgg(player, item,event);
         }
     }
@@ -79,6 +84,6 @@ public class PlayerInteractListener implements Listener{
         String entityTypeString = pokeBallKeys.getEntityType(item);
         pokeBallKeys.setProjectileOwnerUUID(egg,playerUUID);
         pokeBallKeys.setProjectileNbtString(egg, NBTString);
-        pokeBallKeys.setProjectileNbtString(egg, entityTypeString);
+        pokeBallKeys.setProjectileEntityType(egg, entityTypeString);
     }
 }

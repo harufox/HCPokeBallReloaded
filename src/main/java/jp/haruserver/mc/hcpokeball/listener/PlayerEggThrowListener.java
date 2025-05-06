@@ -2,8 +2,6 @@ package jp.haruserver.mc.hcpokeball.listener;
 
 import org.bukkit.event.Listener;
 
-import org.bukkit.Material;
-import org.bukkit.entity.Egg;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerEggThrowEvent;
@@ -11,6 +9,8 @@ import org.bukkit.inventory.ItemStack;
 
 import jp.haruserver.mc.hcpokeball.HCPokeBall;
 import jp.haruserver.mc.hcpokeball.util.PokeBallKeys;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public class PlayerEggThrowListener implements Listener {
 
@@ -23,22 +23,18 @@ public class PlayerEggThrowListener implements Listener {
     @EventHandler
     public void onEggThrow(PlayerEggThrowEvent e) {
         Player player = e.getPlayer();
+        player.sendMessage(Component.text("卵投げ発火",NamedTextColor.GRAY));
         ItemStack playerHand = player.getInventory().getItemInMainHand();
 
-        //卵を使う以外で卵が飛んだ想定
-        if (playerHand == null) return;
-        Material playerHandType = playerHand.getType();
-    
-        //卵以外の何かを使って卵が飛んだ想定
-        if(!playerHandType.equals(Material.EGG)) return;
-        Egg egg = e.getEgg();
         PokeBallKeys pokeBallKeys = plugin.getPokeBallKeys();
 
         //卵にownerUUIDがあるかチェック
         if(!pokeBallKeys.hasOwnerUUID(playerHand)) return;
 
-        String ownerUUID = pokeBallKeys.getOwnerUUID(playerHand);
-        pokeBallKeys.setProjectileOwnerUUID(egg, ownerUUID);
+        player.sendMessage(Component.text("ひよこ抑制",NamedTextColor.GRAY));
+        e.setHatching(false); // ひよこが出ないようにする
+        e.setNumHatches((byte) 0); // 安全対策
+
 
     }
 }
