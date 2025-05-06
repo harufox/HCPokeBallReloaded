@@ -52,6 +52,14 @@ public class ItemManager {
 	public ItemStack createCapturedPokeBall(String petName,String playerName,String playerUUID,String entityTypeString,String json,Material eggMaterial){
 		PokeBallKeys pokeBallKeys = plugin.getPokeBallKeys();
 		ItemStack pokeBall = new ItemStack(eggMaterial);
+		ItemMeta pokeballmeta = pokeBall.getItemMeta();
+		pokeBall.addUnsafeEnchantment(Enchantment.FIRE_ASPECT, 1);
+		pokeballmeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		pokeballmeta.setUnbreakable(true);
+
+		// アイテム名を設定
+		pokeballmeta.displayName(Component.text(petName + " が入ったPokeBall", NamedTextColor.AQUA));
+		pokeBall.setItemMeta(pokeballmeta);
 		pokeBallKeys.setOwnerUUID(pokeBall, playerUUID);
 		pokeBallKeys.setNbtString(pokeBall, json);
 		pokeBallKeys.setEntityType(pokeBall, entityTypeString);
