@@ -14,6 +14,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import jp.haruserver.mc.hcpokeball.listener.HCPokeBallCommands;
+import jp.haruserver.mc.hcpokeball.listener.PlayerCraftItemListener;
 import jp.haruserver.mc.hcpokeball.listener.PlayerJoinListener;
 import jp.haruserver.mc.hcpokeball.listener.ProjectileHitListener;
 import jp.haruserver.mc.hcpokeball.util.CustomConfig;
@@ -43,7 +44,7 @@ public class HCPokeBall  extends JavaPlugin{
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new ProjectileHitListener(this),this);
 		pm.registerEvents(new PlayerJoinListener(this),this);
-
+		pm.registerEvents(new PlayerCraftItemListener(this), this);
 		//コマンド登録
 		HCPokeBallCommands executer = new HCPokeBallCommands(this);
 		getCommand("hcpb").setExecutor(executer);
