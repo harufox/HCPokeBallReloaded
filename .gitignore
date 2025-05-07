@@ -34,3 +34,5 @@ bin
 
 #VSCode
 settings.json
+
+.factorypath

@@ -52,8 +52,8 @@ public class ItemManager {
 	public ItemStack createCapturedPokeBall(String petName,String playerName,String playerUUID,String entityTypeString,String json,Material eggMaterial){
 		PokeBallKeys pokeBallKeys = plugin.getPokeBallKeys();
 		ItemStack pokeBall = new ItemStack(eggMaterial);
-		ItemMeta pokeballmeta = pokeBall.getItemMeta();
 		pokeBall.addUnsafeEnchantment(Enchantment.FIRE_ASPECT, 1);
+		ItemMeta pokeballmeta = pokeBall.getItemMeta();
 		pokeballmeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		pokeballmeta.setUnbreakable(true);
 
