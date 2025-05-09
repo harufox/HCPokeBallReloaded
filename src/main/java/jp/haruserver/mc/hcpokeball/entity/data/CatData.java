@@ -6,7 +6,7 @@ import org.bukkit.entity.Entity;
 
 import jp.haruserver.mc.hcpokeball.contract.EntityData;
 import jp.haruserver.mc.hcpokeball.util.mapper.CatTypeMapper;
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class CatData implements EntityData {
     public String customName;
@@ -24,7 +24,9 @@ public class CatData implements EntityData {
 
     public static CatData fromEntity(Cat cat) {
         CatData data = new CatData();
-        data.customName = cat.getName();
+        if(cat.customName() != null){
+            data.customName = LegacyComponentSerializer.legacySection().serialize(cat.customName());
+        }
         data.hasCustomName = cat.isCustomNameVisible();
         data.adult = cat.isAdult();
         data.health = cat.getHealth();
@@ -40,14 +42,16 @@ public class CatData implements EntityData {
     }
     
     public void applyTo(Cat cat) {
-        cat.customName(Component.text(customName));
+        if(customName != null){
+            cat.customName(LegacyComponentSerializer.legacySection().deserialize(customName));
+        }
         cat.setCustomNameVisible(hasCustomName);
         if(adult){
             cat.setAdult();
         }else{
             cat.setBaby();
         }
-        cat.setTamed(true); // ← オーナー設定前提で true に
+        cat.setTamed(true);
         cat.setHealth(health);
         cat.setCollarColor(DyeColor.valueOf(collarColor));
         cat.setCatType(CatTypeMapper.fromString(catType));

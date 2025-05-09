@@ -4,7 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.haruserver.mc.hcpokeball.contract.EntityData;
+import jp.haruserver.mc.hcpokeball.entity.data.CamelData;
 import jp.haruserver.mc.hcpokeball.entity.data.CatData;
+import jp.haruserver.mc.hcpokeball.entity.data.DonkeyData;
+import jp.haruserver.mc.hcpokeball.entity.data.HorseData;
+import jp.haruserver.mc.hcpokeball.entity.data.ParrotData;
 import jp.haruserver.mc.hcpokeball.entity.data.WolfData;
 
 public class EntityDataRegistry {
@@ -13,6 +17,10 @@ public class EntityDataRegistry {
     static {
         register("WOLF", WolfData.class);
         register("CAT", CatData.class);
+        register("PARROT", ParrotData.class);
+        register("HORSE", HorseData.class);
+        register("CAMEL", CamelData.class);
+        register("DONKEY", DonkeyData.class);
     }
 
     public static void register(String type, Class<? extends EntityData> clazz) {

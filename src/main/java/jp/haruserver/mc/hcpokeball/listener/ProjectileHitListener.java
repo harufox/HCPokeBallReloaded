@@ -26,6 +26,7 @@ import jp.haruserver.mc.hcpokeball.util.PokeBallKeys;
 import jp.haruserver.mc.hcpokeball.util.mapper.EggMaterialMapper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 
 public class ProjectileHitListener implements Listener {
@@ -62,6 +63,7 @@ public class ProjectileHitListener implements Listener {
         } else {
             pokeBallCapture(player, egg, e.getHitEntity());
         }
+        return;
     }
 
     /**
@@ -76,12 +78,28 @@ public class ProjectileHitListener implements Listener {
             dropPokeBall(player);
             return;
         }
-
-        // Tameable（ペット化可能）でないと捕獲不可
-        if (!(hitEntity instanceof Tameable)) {
-            player.sendMessage(ChatColor.AQUA + "捕まえられないようだ・・・");
+        // 人に当てた場合
+        if (hitEntity instanceof Player) {
+            player.sendMessage(ChatColor.AQUA + "ほかのプレイヤーを捕まえることはできません。");
             dropPokeBall(player);
             return;
+        }
+		String playerUUID = player.getUniqueId().toString();
+       
+        // Tameable（ペット化可能）の場合飼い主判定
+        if ((hitEntity instanceof Tameable)) {
+            if(!((Tameable) hitEntity).isTamed()){
+                player.sendMessage(ChatColor.AQUA + "飼いならされていないようだ・・・");
+                dropPokeBall(player);
+                return;
+            }
+
+            String ownerUUID = ((Tameable) hitEntity).getOwnerUniqueId().toString();
+            if(!ownerUUID.equals(playerUUID)){
+                player.sendMessage(ChatColor.AQUA + "ボールをはじかれた!ひとの ものを とったら どろぼう!");
+                dropPokeBall(player);
+                return;
+            }
         }
 
         // ホワイトリストによる制限（configで定義）
@@ -106,7 +124,6 @@ public class ProjectileHitListener implements Listener {
         String json = handler.serialize(hitEntity);
         String petName = hitEntity.getName();  // カスタム名が設定されていれば使う
         String playerDisplayName = player.getName();
-		String playerUUID = player.getUniqueId().toString();
 		String entityTypeString = hitEntity.getType().name();
         Material eggMaterial = EggMaterialMapper.getEggMaterial(type);
 
@@ -114,6 +131,18 @@ public class ProjectileHitListener implements Listener {
         ItemStack pokeball = itemManager.createCapturedPokeBall(petName, playerDisplayName, playerUUID,entityTypeString, json, eggMaterial);
         player.getWorld().dropItem(player.getLocation(), pokeball);
 
+        World world = hitEntity.getWorld();
+        world.playSound(hitEntity.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 0.8f, 1.2f);
+
+        for (int i = 0; i < 5; i++) {
+            Location loc = hitEntity.getLocation().clone().add(
+                (Math.random() - 0.5) * 1.5,
+                Math.random() * 2.0,
+                (Math.random() - 0.5) * 1.5
+            );
+            world.spawnParticle(Particle.REVERSE_PORTAL, loc, 15, 0.2, 0.2, 0.2, 0.05);
+            world.spawnParticle(Particle.END_ROD, loc, 10, 0.1, 0.1, 0.1, 0.01);
+        }
         // 元のエンティティを削除
         hitEntity.remove();
     }
@@ -162,18 +191,25 @@ public class ProjectileHitListener implements Listener {
 		}
 
 		entityData.applyTo(spawnedEntity);
-		player.sendMessage(ChatColor.GREEN + entityData.getType() + " を呼び出した！");
+        String petName = entityData.getType();
+       
+        if(spawnedEntity.customName() != null){
+            petName = LegacyComponentSerializer.legacySection().serialize(spawnedEntity.customName());
+        }
+
+        dropPokeBall(player);
+		player.sendMessage(Component.text(petName + "を呼び出した!",NamedTextColor.AQUA));
 		spawnWorld.spawnParticle(Particle.EXPLOSION, spawnLoc, 10);
 		spawnWorld.spawnParticle(Particle.SMOKE, spawnLoc, 20, 0.2, 0.2, 0.2, 0.01);
 		spawnWorld.spawnParticle(Particle.FIREWORK, spawnLoc, 20, 0.2, 0.4, 0.2, 0.05);
 		spawnWorld.spawnParticle(Particle.END_ROD, spawnLoc, 30, 0.2, 0.5, 0.2, 0.01);
 		spawnWorld.playSound(spawnLoc, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1.0f, 1.2f);
-		spawnWorld.playSound(spawnLoc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.8f, 2.0f); // ウィーン音に近い
-		spawnWorld.playSound(spawnLoc, Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.5f); // 高音の起動音
+		spawnWorld.playSound(spawnLoc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.8f, 2.0f);
+		spawnWorld.playSound(spawnLoc, Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.5f);
 	}
 
     /**
-     * 捕獲失敗時などに空のポケボールを返却する共通処理
+     * 捕獲失敗時などに空のポケボールを返却する
      */
     private void dropPokeBall(Player player) {
         ItemManager itemManager = plugin.getItemManager();
