@@ -10,6 +10,7 @@ import jp.haruserver.mc.hcpokeball.entity.handler.ParrotCaptureHandler;
 import jp.haruserver.mc.hcpokeball.entity.handler.HorseCaptureHandler;
 import jp.haruserver.mc.hcpokeball.entity.handler.CamelCaptureHandler;
 import jp.haruserver.mc.hcpokeball.entity.handler.DonkeyCaptureHandler;
+import jp.haruserver.mc.hcpokeball.entity.handler.PandaCaptureHandler;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ public class CaptureHandlerRegistry {
         handlerMap.put(EntityType.HORSE, new HorseCaptureHandler());
         handlerMap.put(EntityType.CAMEL, new CamelCaptureHandler());
         handlerMap.put(EntityType.DONKEY, new DonkeyCaptureHandler());
+        handlerMap.put(EntityType.PANDA, new PandaCaptureHandler());
     }
 
     public static EntityCaptureHandler<? extends Entity> getHandler(EntityType type) {
