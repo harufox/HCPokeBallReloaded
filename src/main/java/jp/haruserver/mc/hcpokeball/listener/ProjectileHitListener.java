@@ -1,6 +1,7 @@
 package jp.haruserver.mc.hcpokeball.listener;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,8 +19,10 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 
 import jp.haruserver.mc.hcpokeball.HCPokeBall;
+import jp.haruserver.mc.hcpokeball.contract.CaptureCondition;
 import jp.haruserver.mc.hcpokeball.contract.EntityCaptureHandler;
 import jp.haruserver.mc.hcpokeball.contract.EntityData;
+import jp.haruserver.mc.hcpokeball.registry.CaptureConditionRegistry;
 import jp.haruserver.mc.hcpokeball.registry.CaptureHandlerRegistry;
 import jp.haruserver.mc.hcpokeball.util.ItemManager;
 import jp.haruserver.mc.hcpokeball.util.PokeBallKeys;
@@ -85,26 +88,6 @@ public class ProjectileHitListener implements Listener {
             return;
         }
 		String playerUUID = player.getUniqueId().toString();
-       
-        // Tameable（ペット化可能）の場合飼い主判定
-        if ((hitEntity instanceof Tameable)) {
-            Tameable tamerbleEntity = (Tameable) hitEntity;
-            //ラクダなどデフォルトでtamed=trueだがOwnerを持たない場合を判定する
-            if(!(tamerbleEntity.isTamed() && tamerbleEntity.getOwner() == null)){
-                if(tamerbleEntity.getOwner() == null){
-                    player.sendMessage(ChatColor.AQUA + "飼いならされていないようだ・・・");
-                    dropPokeBall(player);
-                    return;
-                }
-
-                String ownerUUID = ((Tameable) hitEntity).getOwnerUniqueId().toString();
-                if(!ownerUUID.equals(playerUUID)){
-                    player.sendMessage(ChatColor.AQUA + "ボールをはじかれた!ひとの ものを とったら どろぼう!");
-                    dropPokeBall(player);
-                    return;
-                }
-            }
-        }
 
         // ホワイトリストによる制限（configで定義）
         EntityType type = hitEntity.getType();
@@ -120,6 +103,20 @@ public class ProjectileHitListener implements Listener {
             player.sendMessage(ChatColor.AQUA + "そのモブはまだ捕獲できないようだ…");
             dropPokeBall(player);
             return;
+        }
+
+        Optional<CaptureCondition> optionalCondition = CaptureConditionRegistry.getCondition(type);
+
+        //Condition未登録の場合
+        if (optionalCondition.isEmpty()) {
+            player.sendMessage("このMobはまだ捕獲に対応していません");
+            return;
+        }
+
+        //捕獲判定
+        CaptureCondition condition = optionalCondition.get();
+        if (!condition.canCapture(hitEntity, player)) {
+            player.sendMessage("このMobは捕獲できません");
         }
 
         // エンティティをJSON化して保存
