@@ -1,11 +1,9 @@
 package jp.haruserver.mc.hcpokeball.listener;
 
 import org.bukkit.event.Listener;
-
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Egg;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerEggThrowEvent;
-import org.bukkit.inventory.ItemStack;
 
 import jp.haruserver.mc.hcpokeball.HCPokeBall;
 import jp.haruserver.mc.hcpokeball.util.PokeBallKeys;
@@ -20,13 +18,12 @@ public class PlayerEggThrowListener implements Listener {
 
     @EventHandler
     public void onEggThrow(PlayerEggThrowEvent e) {
-        Player player = e.getPlayer();
-        ItemStack playerHand = player.getInventory().getItemInMainHand();
 
+        Egg egg = e.getEgg();
         PokeBallKeys pokeBallKeys = plugin.getPokeBallKeys();
 
         //卵にownerUUIDがあるかチェック
-        if(!pokeBallKeys.hasOwnerUUID(playerHand)) return;
+        if(!pokeBallKeys.hasProjectileOwnerUUID(egg)) return;
 
         e.setHatching(false); // ひよこが出ないようにする
         e.setNumHatches((byte) 0); // 安全対策

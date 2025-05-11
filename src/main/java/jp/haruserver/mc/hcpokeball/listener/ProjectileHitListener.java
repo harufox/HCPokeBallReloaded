@@ -88,17 +88,21 @@ public class ProjectileHitListener implements Listener {
        
         // Tameable（ペット化可能）の場合飼い主判定
         if ((hitEntity instanceof Tameable)) {
-            if(!((Tameable) hitEntity).isTamed()){
-                player.sendMessage(ChatColor.AQUA + "飼いならされていないようだ・・・");
-                dropPokeBall(player);
-                return;
-            }
+            Tameable tamerbleEntity = (Tameable) hitEntity;
+            //ラクダなどデフォルトでtamed=trueだがOwnerを持たない場合を判定する
+            if(!(tamerbleEntity.isTamed() && tamerbleEntity.getOwner() == null)){
+                if(tamerbleEntity.getOwner() == null){
+                    player.sendMessage(ChatColor.AQUA + "飼いならされていないようだ・・・");
+                    dropPokeBall(player);
+                    return;
+                }
 
-            String ownerUUID = ((Tameable) hitEntity).getOwnerUniqueId().toString();
-            if(!ownerUUID.equals(playerUUID)){
-                player.sendMessage(ChatColor.AQUA + "ボールをはじかれた!ひとの ものを とったら どろぼう!");
-                dropPokeBall(player);
-                return;
+                String ownerUUID = ((Tameable) hitEntity).getOwnerUniqueId().toString();
+                if(!ownerUUID.equals(playerUUID)){
+                    player.sendMessage(ChatColor.AQUA + "ボールをはじかれた!ひとの ものを とったら どろぼう!");
+                    dropPokeBall(player);
+                    return;
+                }
             }
         }
 
