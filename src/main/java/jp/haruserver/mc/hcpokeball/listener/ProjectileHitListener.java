@@ -217,7 +217,9 @@ public class ProjectileHitListener implements Listener {
      */
     private void dropPokeBall(Player player) {
         ItemManager itemManager = plugin.getItemManager();
-        ItemStack emptyBall = itemManager.createPokeBall(player.getUniqueId().toString());
+        String playerUUID = player.getUniqueId().toString();
+        String playerName = player.getName();
+        ItemStack emptyBall = itemManager.createPokeBall(playerUUID,playerName);
         player.getWorld().dropItem(player.getLocation(), emptyBall);
     }
 }

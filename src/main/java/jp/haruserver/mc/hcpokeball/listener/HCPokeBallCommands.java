@@ -40,7 +40,8 @@ public class HCPokeBallCommands implements CommandExecutor{
 				if(!((Player)sender).hasPermission("hcpokeball.admin")){
 					return false;
 				}
-				ItemStack pokeball = itemManager.createPokeBall(playerUUID);
+				String playerName = player.getName();
+				ItemStack pokeball = itemManager.createPokeBall(playerUUID,playerName);
 				player.getWorld().dropItem(player.getLocation(), pokeball);
 			}
 		}

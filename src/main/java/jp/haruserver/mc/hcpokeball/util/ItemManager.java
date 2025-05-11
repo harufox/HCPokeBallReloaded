@@ -40,11 +40,11 @@ public class ItemManager {
 	}
 
 	//プレイヤー専用pokeballを作成する。
-	public ItemStack createPokeBall(String UUID){
+	public ItemStack createPokeBall(String UUID,String ownerName){
 		ItemStack pokeBall = createBlankPokeBall();
 		PokeBallKeys pokeBakkBallKeys = plugin.getPokeBallKeys();
 		pokeBakkBallKeys.setOwnerUUID(pokeBall, UUID);
-		setLine(pokeBall, Component.text("OWNER:", NamedTextColor.DARK_PURPLE), 2);
+		setLine(pokeBall, Component.text("OWNER:" + ownerName, NamedTextColor.DARK_PURPLE), 2);
 		return pokeBall;
 	}
 
