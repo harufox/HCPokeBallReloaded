@@ -1,5 +1,6 @@
 package jp.haruserver.mc.hcpokeball.listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -43,6 +44,18 @@ public class HCPokeBallCommands implements CommandExecutor{
 				String playerName = player.getName();
 				ItemStack pokeball = itemManager.createPokeBall(playerUUID,playerName);
 				player.getWorld().dropItem(player.getLocation(), pokeball);
+			}
+		}
+		if (args[0].equalsIgnoreCase("give")){
+			if(!(sender instanceof ConsoleCommandSender)){
+				if(!((Player)sender).hasPermission("hcpokeball.admin")){
+					return false;
+				}
+				Player givePlayer = Bukkit.getPlayer(args[1]);
+				String givePlayerName = givePlayer.getName();
+				String givePlayerUUID = givePlayer.getUniqueId().toString();
+				ItemStack pokeball = itemManager.createPokeBall(givePlayerUUID,givePlayerName);
+				givePlayer.getWorld().dropItem(givePlayer.getLocation(), pokeball);
 			}
 		}
 		if (args[0].equalsIgnoreCase("debug")){
