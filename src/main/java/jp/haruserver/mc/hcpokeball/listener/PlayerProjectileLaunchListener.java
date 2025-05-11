@@ -42,6 +42,8 @@ public class PlayerProjectileLaunchListener implements Listener{
         Egg egg = (Egg)projectile;
         PokeBallKeys pokeBallKeys = plugin.getPokeBallKeys();
 
+        if(!pokeBallKeys.hasOwnerUUID(playerHand)) return;
+
         // NBTにオーナーUUIDを埋め込む
         String ownerUUID = pokeBallKeys.getOwnerUUID(playerHand);
         pokeBallKeys.setProjectileOwnerUUID(egg, ownerUUID);

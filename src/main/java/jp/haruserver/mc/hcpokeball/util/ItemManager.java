@@ -33,18 +33,18 @@ public class ItemManager {
 		// アイテム名を設定
 		String itemName = "PokeBall";
 		pokeballmeta.displayName(Component.text(itemName, NamedTextColor.AQUA));
-		setLine(pokeBall, Component.text("[Empty]", NamedTextColor.DARK_PURPLE), 1);
-
 		pokeBall.setItemMeta(pokeballmeta);
+		setLine(pokeBall, Component.text("[Empty]", NamedTextColor.DARK_PURPLE), 1);
 		return pokeBall;
 	
 	}
 
 	//プレイヤー専用pokeballを作成する。
-	public ItemStack createPokeBall(String UUID){
+	public ItemStack createPokeBall(String UUID,String ownerName){
 		ItemStack pokeBall = createBlankPokeBall();
 		PokeBallKeys pokeBakkBallKeys = plugin.getPokeBallKeys();
 		pokeBakkBallKeys.setOwnerUUID(pokeBall, UUID);
+		setLine(pokeBall, Component.text("OWNER:" + ownerName, NamedTextColor.DARK_PURPLE), 2);
 		return pokeBall;
 	}
 
@@ -65,13 +65,12 @@ public class ItemManager {
 		pokeBallKeys.setEntityType(pokeBall, entityTypeString);
 		setLine(pokeBall, Component.text("PETNAME:" + petName, NamedTextColor.AQUA), 1);
 		setLine(pokeBall, Component.text("OWNER:" + playerName, NamedTextColor.DARK_PURPLE), 2);
-		setLine(pokeBall, Component.text("SPECIES:" + entityTypeString, NamedTextColor.YELLOW), 2);
+		setLine(pokeBall, Component.text("SPECIES:" + entityTypeString, NamedTextColor.YELLOW), 3);
 		return pokeBall;
 	}
 
 	//アイテム説明文を設定する
 	public void setLine(ItemStack item, Component lineText,int lineNumber) {
-        if (item == null || !item.hasItemMeta() || lineNumber < 1) return;
 
         ItemMeta meta = item.getItemMeta();
         List<Component> lore = meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();

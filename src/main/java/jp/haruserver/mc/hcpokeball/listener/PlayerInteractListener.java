@@ -1,5 +1,6 @@
 package jp.haruserver.mc.hcpokeball.listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -41,10 +42,10 @@ public class PlayerInteractListener implements Listener{
         //OwnerUUIDがあるかチェック
         if(!pokeBallKeys.hasOwnerUUID(item)) return;
         
+        //卵ではない場合イベントキャンセル
         if(!(item.getType().equals(Material.EGG))){
             event.setCancelled(true);
         }
-
 
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
@@ -61,16 +62,13 @@ public class PlayerInteractListener implements Listener{
         //スポーンエッグの場合
         if (itemType.name().endsWith("_SPAWN_EGG")){
             playerThrowSpawnEgg(player, item,event);
+            return;
         }
+        return;
     }
 
     private void playerThrowSpawnEgg(Player player,ItemStack item,PlayerInteractEvent event){
         PokeBallKeys pokeBallKeys = plugin.getPokeBallKeys();
-    
-        // アイテムを1つ減らす
-        if (player.getGameMode() != GameMode.CREATIVE) {
-            item.setAmount(item.getAmount() - 1);
-        }
     
         // 卵を投げる（方向調整付き）
 		Location loc = player.getLocation();
@@ -84,5 +82,12 @@ public class PlayerInteractListener implements Listener{
         pokeBallKeys.setProjectileOwnerUUID(egg,playerUUID);
         pokeBallKeys.setProjectileNbtString(egg, NBTString);
         pokeBallKeys.setProjectileEntityType(egg, entityTypeString);
+
+        Bukkit.getServer().getLogger().info("ペット召喚:" + playerUUID + "|" + NBTString + "|" + entityTypeString);
+
+        // アイテムを1つ減らす
+        if (player.getGameMode() != GameMode.CREATIVE) {
+            item.setAmount(item.getAmount() - 1);
+        }
     }
 }

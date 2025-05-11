@@ -31,7 +31,6 @@ public class PokeBallKeys {
 
     //オーナーUUID getter
     public String getOwnerUUID(ItemStack item) {
-        if (!hasOwnerUUID(item)) return null;
         return item.getItemMeta().getPersistentDataContainer().get(OWNER_UUID, PersistentDataType.STRING);
     }
 
@@ -66,7 +65,6 @@ public class PokeBallKeys {
 
     //オーナーUUID getter
     public String getEntityType(ItemStack item) {
-        if (!hasOwnerUUID(item)) return null;
         return item.getItemMeta().getPersistentDataContainer().get(ENTITY_TYPE, PersistentDataType.STRING);
     }
 
@@ -102,7 +100,6 @@ public class PokeBallKeys {
 
     //ペット情報NBT文字列 getter
     public String getNbtString(ItemStack item) {
-        if (!hasOwnerUUID(item)) return null;
         return item.getItemMeta().getPersistentDataContainer().get(NBT_STRING, PersistentDataType.STRING);
     }
 

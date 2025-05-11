@@ -14,12 +14,12 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import jp.haruserver.mc.hcpokeball.listener.HCPokeBallCommands;
-import jp.haruserver.mc.hcpokeball.listener.PlayerCraftItemListener;
 import jp.haruserver.mc.hcpokeball.listener.PlayerEggThrowListener;
 import jp.haruserver.mc.hcpokeball.listener.PlayerInteractEntityListener;
 import jp.haruserver.mc.hcpokeball.listener.PlayerInteractListener;
 import jp.haruserver.mc.hcpokeball.listener.PlayerJoinListener;
 import jp.haruserver.mc.hcpokeball.listener.PlayerProjectileLaunchListener;
+import jp.haruserver.mc.hcpokeball.listener.PrepareItemCraftListener;
 import jp.haruserver.mc.hcpokeball.listener.ProjectileHitListener;
 import jp.haruserver.mc.hcpokeball.util.CustomConfig;
 import jp.haruserver.mc.hcpokeball.util.ItemManager;
@@ -48,7 +48,7 @@ public class HCPokeBall  extends JavaPlugin{
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new ProjectileHitListener(this),this);
 		pm.registerEvents(new PlayerJoinListener(this),this);
-		pm.registerEvents(new PlayerCraftItemListener(this), this);
+		pm.registerEvents(new PrepareItemCraftListener(this), this);
 		pm.registerEvents(new PlayerEggThrowListener(this), this);
 		pm.registerEvents(new PlayerProjectileLaunchListener(this), this);
 		pm.registerEvents(new PlayerInteractListener(this), this);
@@ -70,7 +70,7 @@ public class HCPokeBall  extends JavaPlugin{
 		recipe.setIngredient('E', Material.EGG);
 		recipe.setIngredient('F', Material.BAMBOO);
 		recipe.setIngredient('G', Material.WHEAT_SEEDS);
-		recipe.setIngredient('H', Material.REDSTONE_BLOCK);
+		recipe.setIngredient('H', Material.REDSTONE);
 		recipe.setIngredient('I', Material.GOLDEN_APPLE);
 		Bukkit.addRecipe(recipe);
 
