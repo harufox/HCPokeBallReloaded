@@ -110,6 +110,7 @@ public class ProjectileHitListener implements Listener {
         //Condition未登録の場合
         if (optionalCondition.isEmpty()) {
             player.sendMessage("このMobはまだ捕獲に対応していません");
+            dropPokeBall(player);
             return;
         }
 
@@ -117,11 +118,12 @@ public class ProjectileHitListener implements Listener {
         CaptureCondition condition = optionalCondition.get();
         if (!condition.canCapture(hitEntity, player)) {
             player.sendMessage("このMobは捕獲できません");
+            dropPokeBall(player);
+            return;
         }
 
         // エンティティをJSON化して保存
         EntityCaptureHandler handler = CaptureHandlerRegistry.getHandler(type);
-		@SuppressWarnings("unchecked")
         String json = handler.serialize(hitEntity);
         String petName = hitEntity.getName();  // カスタム名が設定されていれば使う
         String playerDisplayName = player.getName();
