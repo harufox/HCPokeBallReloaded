@@ -2,6 +2,7 @@ package jp.haruserver.mc.hcpokeball.entity.data;
 
 import org.bukkit.entity.Camel;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import jp.haruserver.mc.hcpokeball.contract.EntityData;
@@ -41,12 +42,12 @@ public class CamelData implements EntityData {
     }
 
     @Override
-    public void applyTo(Entity entity) {
+    public void applyTo(Entity entity,Player player) {
         if (!(entity instanceof Camel)) return;
-        applyTo((Camel) entity);
+        applyTo((Camel) entity,player);
     }
 
-    public void applyTo(Camel camel) {
+    public void applyTo(Camel camel,Player player) {
         if(customName != null){
             camel.customName(LegacyComponentSerializer.legacySection().deserialize(customName));
         }

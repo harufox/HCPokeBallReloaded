@@ -7,7 +7,9 @@ import jp.haruserver.mc.hcpokeball.contract.EntityData;
 import jp.haruserver.mc.hcpokeball.entity.data.CamelData;
 import jp.haruserver.mc.hcpokeball.entity.data.CatData;
 import jp.haruserver.mc.hcpokeball.entity.data.DonkeyData;
+import jp.haruserver.mc.hcpokeball.entity.data.FoxData;
 import jp.haruserver.mc.hcpokeball.entity.data.HorseData;
+import jp.haruserver.mc.hcpokeball.entity.data.LlamaData;
 import jp.haruserver.mc.hcpokeball.entity.data.PandaData;
 import jp.haruserver.mc.hcpokeball.entity.data.ParrotData;
 import jp.haruserver.mc.hcpokeball.entity.data.WolfData;
@@ -23,6 +25,8 @@ public class EntityDataRegistry {
         register("CAMEL", CamelData.class);
         register("DONKEY", DonkeyData.class);
         register("PANDA", PandaData.class);
+        register("FOX", FoxData.class);
+        register("LLAMA", LlamaData.class);
     }
 
     public static void register(String type, Class<? extends EntityData> clazz) {

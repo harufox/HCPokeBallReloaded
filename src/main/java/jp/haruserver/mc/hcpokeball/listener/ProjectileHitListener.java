@@ -12,7 +12,6 @@ import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -188,12 +187,7 @@ public class ProjectileHitListener implements Listener {
 		// エンティティをスポーン
 		Entity spawnedEntity = spawnLoc.getWorld().spawn(spawnLoc, entityType.getEntityClass());
 
-		// データ適用
-		if (spawnedEntity instanceof Tameable) {
-			((Tameable) spawnedEntity).setOwner(player);
-		}
-
-		entityData.applyTo(spawnedEntity);
+		entityData.applyTo(spawnedEntity,player);
         String petName = entityData.getType();
        
         if(spawnedEntity.customName() != null){

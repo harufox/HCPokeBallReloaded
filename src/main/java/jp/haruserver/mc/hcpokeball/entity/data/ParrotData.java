@@ -1,6 +1,7 @@
 package jp.haruserver.mc.hcpokeball.entity.data;
 
 import org.bukkit.entity.Parrot;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Entity;
 import jp.haruserver.mc.hcpokeball.contract.EntityData;
 import jp.haruserver.mc.hcpokeball.util.mapper.ParrotVariantMapper;
@@ -31,12 +32,12 @@ public class ParrotData implements EntityData {
     }
 
     @Override
-    public void applyTo(Entity entity) {
+    public void applyTo(Entity entity,Player player) {
         if (!(entity instanceof Parrot)) return;
-        applyTo((Parrot) entity);
+        applyTo((Parrot) entity,player);
     }
     
-    public void applyTo(Parrot parrot) {
+    public void applyTo(Parrot parrot,Player player) {
         if(customName != null){
             parrot.customName(LegacyComponentSerializer.legacySection().deserialize(customName));
         }
@@ -49,5 +50,6 @@ public class ParrotData implements EntityData {
         parrot.setVariant(ParrotVariantMapper.fromString(variant));
         parrot.setHealth(health);
         parrot.setTamed(true);
+        parrot.setOwner(player);
     }
 }

@@ -1,6 +1,7 @@
 package jp.haruserver.mc.hcpokeball.entity.data;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Donkey;
 import org.bukkit.inventory.EquipmentSlot;
@@ -10,7 +11,7 @@ import jp.haruserver.mc.hcpokeball.contract.EntityData;
 import jp.haruserver.mc.hcpokeball.util.ItemStackSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
-public class DonkeyData  implements EntityData {
+public class DonkeyData implements EntityData {
 
     public String customName;
     public boolean hasCustomName;
@@ -55,12 +56,12 @@ public class DonkeyData  implements EntityData {
     }
 
     @Override
-    public void applyTo(Entity entity) {
+    public void applyTo(Entity entity,Player player) {
         if (!(entity instanceof Donkey)) return;
-        applyTo((Donkey) entity);
+        applyTo((Donkey) entity,player);
     }
 
-    public void applyTo(Donkey donkey) {
+    public void applyTo(Donkey donkey,Player player) {
         if(customName != null){
             donkey.customName(LegacyComponentSerializer.legacySection().deserialize(customName));
         }
@@ -84,5 +85,6 @@ public class DonkeyData  implements EntityData {
             ItemStack[] contents = ItemStackSerializer.fromBase64Array(inventoryBase64);
             donkey.getInventory().setContents(contents);
         }
+        donkey.setOwner(player);
     }
 }

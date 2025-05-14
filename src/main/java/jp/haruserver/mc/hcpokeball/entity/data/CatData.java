@@ -3,6 +3,7 @@ package jp.haruserver.mc.hcpokeball.entity.data;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Cat;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import jp.haruserver.mc.hcpokeball.contract.EntityData;
 import jp.haruserver.mc.hcpokeball.util.mapper.CatTypeMapper;
@@ -36,12 +37,12 @@ public class CatData implements EntityData {
     }
 
     @Override
-    public void applyTo(Entity entity) {
+    public void applyTo(Entity entity,Player player) {
        if (!(entity instanceof Cat)) return;
-        applyTo((Cat) entity);
+        applyTo((Cat) entity,player);
     }
     
-    public void applyTo(Cat cat) {
+    public void applyTo(Cat cat,Player player) {
         if(customName != null){
             cat.customName(LegacyComponentSerializer.legacySection().deserialize(customName));
         }
@@ -56,5 +57,6 @@ public class CatData implements EntityData {
         cat.setCollarColor(DyeColor.valueOf(collarColor));
         cat.setCatType(CatTypeMapper.fromString(catType));
         cat.setSitting(true);
+        cat.setOwner(player);
     }
 }
