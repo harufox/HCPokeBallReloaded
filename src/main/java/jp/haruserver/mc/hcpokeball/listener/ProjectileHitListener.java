@@ -1,6 +1,7 @@
 package jp.haruserver.mc.hcpokeball.listener;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,15 +12,16 @@ import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 
 import jp.haruserver.mc.hcpokeball.HCPokeBall;
+import jp.haruserver.mc.hcpokeball.contract.CaptureCondition;
 import jp.haruserver.mc.hcpokeball.contract.EntityCaptureHandler;
 import jp.haruserver.mc.hcpokeball.contract.EntityData;
+import jp.haruserver.mc.hcpokeball.registry.CaptureConditionRegistry;
 import jp.haruserver.mc.hcpokeball.registry.CaptureHandlerRegistry;
 import jp.haruserver.mc.hcpokeball.util.ItemManager;
 import jp.haruserver.mc.hcpokeball.util.PokeBallKeys;
@@ -85,26 +87,6 @@ public class ProjectileHitListener implements Listener {
             return;
         }
 		String playerUUID = player.getUniqueId().toString();
-       
-        // Tameable（ペット化可能）の場合飼い主判定
-        if ((hitEntity instanceof Tameable)) {
-            Tameable tamerbleEntity = (Tameable) hitEntity;
-            //ラクダなどデフォルトでtamed=trueだがOwnerを持たない場合を判定する
-            if(!(tamerbleEntity.isTamed() && tamerbleEntity.getOwner() == null)){
-                if(tamerbleEntity.getOwner() == null){
-                    player.sendMessage(ChatColor.AQUA + "飼いならされていないようだ・・・");
-                    dropPokeBall(player);
-                    return;
-                }
-
-                String ownerUUID = ((Tameable) hitEntity).getOwnerUniqueId().toString();
-                if(!ownerUUID.equals(playerUUID)){
-                    player.sendMessage(ChatColor.AQUA + "ボールをはじかれた!ひとの ものを とったら どろぼう!");
-                    dropPokeBall(player);
-                    return;
-                }
-            }
-        }
 
         // ホワイトリストによる制限（configで定義）
         EntityType type = hitEntity.getType();
@@ -122,9 +104,25 @@ public class ProjectileHitListener implements Listener {
             return;
         }
 
+        Optional<CaptureCondition> optionalCondition = CaptureConditionRegistry.getCondition(type);
+
+        //Condition未登録の場合
+        if (optionalCondition.isEmpty()) {
+            player.sendMessage("このMobはまだ捕獲に対応していません");
+            dropPokeBall(player);
+            return;
+        }
+
+        //捕獲判定
+        CaptureCondition condition = optionalCondition.get();
+        if (!condition.canCapture(hitEntity, player)) {
+            player.sendMessage("このMobは捕獲できません");
+            dropPokeBall(player);
+            return;
+        }
+
         // エンティティをJSON化して保存
         EntityCaptureHandler handler = CaptureHandlerRegistry.getHandler(type);
-		@SuppressWarnings("unchecked")
         String json = handler.serialize(hitEntity);
         String petName = hitEntity.getName();  // カスタム名が設定されていれば使う
         String playerDisplayName = player.getName();
@@ -189,12 +187,7 @@ public class ProjectileHitListener implements Listener {
 		// エンティティをスポーン
 		Entity spawnedEntity = spawnLoc.getWorld().spawn(spawnLoc, entityType.getEntityClass());
 
-		// データ適用
-		if (spawnedEntity instanceof Tameable) {
-			((Tameable) spawnedEntity).setOwner(player);
-		}
-
-		entityData.applyTo(spawnedEntity);
+		entityData.applyTo(spawnedEntity,player);
         String petName = entityData.getType();
        
         if(spawnedEntity.customName() != null){

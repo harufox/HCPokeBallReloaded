@@ -9,6 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Horse.Color;
 import org.bukkit.entity.Horse.Style;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class HorseData implements EntityData {
@@ -48,12 +49,12 @@ public class HorseData implements EntityData {
     }
 
     @Override
-    public void applyTo(Entity entity) {
+    public void applyTo(Entity entity,Player player) {
         if (!(entity instanceof Horse)) return;
-        applyTo((Horse) entity);
+        applyTo((Horse) entity,player);
     }
 
-    public void applyTo(Horse horse) {
+    public void applyTo(Horse horse,Player player) {
         if(customName != null){
             horse.customName(LegacyComponentSerializer.legacySection().deserialize(customName));
         }
@@ -72,5 +73,6 @@ public class HorseData implements EntityData {
 
         ItemStack[] contents = ItemStackSerializer.fromBase64Array(inventoryBase64);
         horse.getInventory().setContents(contents);
+        horse.setOwner(player);
     }
 }

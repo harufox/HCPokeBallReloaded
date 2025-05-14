@@ -2,6 +2,7 @@ package jp.haruserver.mc.hcpokeball.entity.data;
 
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -43,12 +44,12 @@ public class WolfData implements EntityData {
     }
 
     @Override
-    public void applyTo(Entity entity) {
+    public void applyTo(Entity entity,Player player) {
        if (!(entity instanceof Wolf)) return;
-        applyTo((Wolf) entity);
+        applyTo((Wolf) entity,player);
     }
     
-    public void applyTo(Wolf wolf) {
+    public void applyTo(Wolf wolf,Player player) {
         if(customName != null){
             wolf.customName(LegacyComponentSerializer.legacySection().deserialize(customName));
         }
@@ -66,5 +67,6 @@ public class WolfData implements EntityData {
 
         ItemStack contents = ItemStackSerializer.fromBase64(inventoryBase64);
         wolf.getEquipment().setItem(EquipmentSlot.BODY, contents);
+        wolf.setOwner(player);
     }
 }

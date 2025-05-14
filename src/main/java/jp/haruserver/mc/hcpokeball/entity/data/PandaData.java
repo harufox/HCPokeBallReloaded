@@ -4,6 +4,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Panda;
 import org.bukkit.entity.Panda.Gene;
+import org.bukkit.entity.Player;
 
 import jp.haruserver.mc.hcpokeball.contract.EntityData;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -38,12 +39,12 @@ public class PandaData implements EntityData {
     }
 
     @Override
-    public void applyTo(Entity entity) {
+    public void applyTo(Entity entity,Player player) {
         if (!(entity instanceof Panda)) return;
-        applyTo((Panda) entity);
+        applyTo((Panda) entity,player);
     }
 
-    public void applyTo(Panda panda) {
+    public void applyTo(Panda panda,Player player) {
         if(customName != null){
             panda.customName(LegacyComponentSerializer.legacySection().deserialize(customName));
         }
