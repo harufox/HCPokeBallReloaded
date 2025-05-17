@@ -1,5 +1,22 @@
 captureWhitelist:
   - WOLF
+  - CAT
   - HORSE
   - VILLAGER
   - FOX
+  - PARROT
+  - CAMEL
+  - DONKEY
+  - PANDA
+  - LLAMA
+  - GOAT
+  - COW
+  - MOOSHROOM
+  - CHICKEN
+  - SHEEP
+  - PIG
+  - RABBIT
+  - AXOLOTL
+  - ARMADILLO
+  - POLAR_BEAR
+  - FROG

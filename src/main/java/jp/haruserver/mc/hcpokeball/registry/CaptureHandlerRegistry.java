@@ -4,15 +4,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
 import jp.haruserver.mc.hcpokeball.contract.EntityCaptureHandler;
-import jp.haruserver.mc.hcpokeball.entity.handler.CatCaptureHandler;
-import jp.haruserver.mc.hcpokeball.entity.handler.WolfCaptureHandler;
-import jp.haruserver.mc.hcpokeball.entity.handler.ParrotCaptureHandler;
-import jp.haruserver.mc.hcpokeball.entity.handler.HorseCaptureHandler;
-import jp.haruserver.mc.hcpokeball.entity.handler.LlamaCaptureHandler;
-import jp.haruserver.mc.hcpokeball.entity.handler.CamelCaptureHandler;
-import jp.haruserver.mc.hcpokeball.entity.handler.DonkeyCaptureHandler;
-import jp.haruserver.mc.hcpokeball.entity.handler.PandaCaptureHandler;
-import jp.haruserver.mc.hcpokeball.entity.handler.FoxCaptureHandler;
+import jp.haruserver.mc.hcpokeball.entity.handler.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +22,17 @@ public class CaptureHandlerRegistry {
         handlerMap.put(EntityType.PANDA, new PandaCaptureHandler());
         handlerMap.put(EntityType.FOX, new FoxCaptureHandler());
         handlerMap.put(EntityType.LLAMA, new LlamaCaptureHandler());
+        handlerMap.put(EntityType.GOAT, new GoatCaptureHandler());
+        handlerMap.put(EntityType.COW, new CowCaptureHandler());
+        handlerMap.put(EntityType.MOOSHROOM, new MushroomCowCaptureHandler());
+        handlerMap.put(EntityType.CHICKEN, new ChickenCaptureHandler());
+        handlerMap.put(EntityType.SHEEP, new SheepCaptureHandler());
+        handlerMap.put(EntityType.PIG, new PigCaptureHandler());
+        handlerMap.put(EntityType.RABBIT, new RabbitCaptureHandler());
+        handlerMap.put(EntityType.AXOLOTL, new AxolotlCaptureHandler());
+        handlerMap.put(EntityType.ARMADILLO, new ArmadilloCaptureHandler());
+        handlerMap.put(EntityType.POLAR_BEAR, new PolarBearCaptureHandler());
+        handlerMap.put(EntityType.FROG, new FrogCaptureHandler());
     }
 
     public static EntityCaptureHandler<? extends Entity> getHandler(EntityType type) {
