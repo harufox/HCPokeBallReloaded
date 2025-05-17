@@ -10,10 +10,9 @@ import org.bukkit.inventory.ItemStack;
 
 import jp.haruserver.mc.hcpokeball.HCPokeBall;
 import jp.haruserver.mc.hcpokeball.util.ItemManager;
+import jp.haruserver.mc.hcpokeball.util.MessageManager;
 import jp.haruserver.mc.hcpokeball.util.PokeBallKeys;
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.ChatColor;
-
 
 
 public class HCPokeBallCommands implements CommandExecutor{
@@ -25,15 +24,17 @@ public class HCPokeBallCommands implements CommandExecutor{
     }
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (!(sender instanceof Player)) return false;
+		Player player = (Player)sender;
+        MessageManager messageManager = plugin.getMessageManager();
+		String messagePrefix = messageManager.getMessage(player, "pokeball.prefix");
 		if(args.length == 0){
-			sender.sendMessage(ChatColor.AQUA + "---------------------[INFO]---------------------");
-			sender.sendMessage(ChatColor.AQUA + "/hcpb get - ボールを入手します");
-			sender.sendMessage(ChatColor.AQUA + "---------------------[INFO]---------------------");
+			player.sendMessage(messageManager.getMessage(player, "command.info"));
+			player.sendMessage(messageManager.getMessage(player, "command.info.get"));
+			player.sendMessage(messageManager.getMessage(player, "command.info"));
 			return false;
 		}
-
 		ItemManager itemManager = plugin.getItemManager();
-		Player player = (Player)sender;
+
 		String playerUUID = player.getUniqueId().toString();
 		//pokeball取得処理
 		if (args[0].equalsIgnoreCase("get")){
@@ -44,6 +45,7 @@ public class HCPokeBallCommands implements CommandExecutor{
 				String playerName = player.getName();
 				ItemStack pokeball = itemManager.createPokeBall(playerUUID,playerName);
 				player.getWorld().dropItem(player.getLocation(), pokeball);
+				player.sendMessage(messagePrefix + messageManager.getMessage(player, "command.get.success"));
 			}
 		}
 		if (args[0].equalsIgnoreCase("give")){
@@ -56,6 +58,7 @@ public class HCPokeBallCommands implements CommandExecutor{
 				String givePlayerUUID = givePlayer.getUniqueId().toString();
 				ItemStack pokeball = itemManager.createPokeBall(givePlayerUUID,givePlayerName);
 				givePlayer.getWorld().dropItem(givePlayer.getLocation(), pokeball);
+				player.sendMessage(messagePrefix + messageManager.getMessage(player, "command.give.success"));
 			}
 		}
 		if (args[0].equalsIgnoreCase("debug")){
@@ -73,9 +76,6 @@ public class HCPokeBallCommands implements CommandExecutor{
 				player.sendMessage(Component.text(json));
 				player.sendMessage(Component.text(type));
 			}
-		}
-		if (args[0].equalsIgnoreCase("get2")){
-
 		}
 		return false;
 	}
