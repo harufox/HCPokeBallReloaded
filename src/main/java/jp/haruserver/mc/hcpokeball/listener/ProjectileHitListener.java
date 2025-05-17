@@ -24,12 +24,10 @@ import jp.haruserver.mc.hcpokeball.contract.EntityData;
 import jp.haruserver.mc.hcpokeball.registry.CaptureConditionRegistry;
 import jp.haruserver.mc.hcpokeball.registry.CaptureHandlerRegistry;
 import jp.haruserver.mc.hcpokeball.util.ItemManager;
+import jp.haruserver.mc.hcpokeball.util.MessageManager;
 import jp.haruserver.mc.hcpokeball.util.PokeBallKeys;
 import jp.haruserver.mc.hcpokeball.util.mapper.EggMaterialMapper;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.md_5.bungee.api.ChatColor;
 
 public class ProjectileHitListener implements Listener {
 
@@ -41,9 +39,11 @@ public class ProjectileHitListener implements Listener {
 
     @EventHandler
     public void onPokeBallHit(ProjectileHitEvent e) {
+        MessageManager messageManager = plugin.getMessageManager();
         // プレイヤーが投げた弾か判定
         if (!(e.getEntity().getShooter() instanceof Player)) return;
         Player player = (Player) e.getEntity().getShooter();
+        String messagePrefix = messageManager.getMessage(player, "pokeball.prefix");
         // 卵であるか判定
         if (!(e.getEntity() instanceof Egg)) return;
         Egg egg = (Egg) e.getEntity();
@@ -55,7 +55,7 @@ public class ProjectileHitListener implements Listener {
         String playerUUID = player.getUniqueId().toString();
         String projectileOwnerUUID = pokeBallKeys.getProjectileOwnerUUID(egg);
         if (!playerUUID.equals(projectileOwnerUUID)){
-			player.sendMessage(Component.text("あなたのPokeBallではありません",NamedTextColor.AQUA));
+			player.sendMessage(messagePrefix + messageManager.getMessage(player, "capture.failed.missed"));
 			return;
 		}
 
@@ -72,18 +72,20 @@ public class ProjectileHitListener implements Listener {
      * 捕獲処理：空のポケボールがペットMOBに当たった時に呼ばれる
      */
     private void pokeBallCapture(Player player, Egg egg, Entity hitEntity) {
+        MessageManager messageManager = plugin.getMessageManager();
         ItemManager itemManager = plugin.getItemManager();
+        String messagePrefix = messageManager.getMessage(player, "pokeball.prefix");
 
         // 外れた場合（何にも当たらなかった）
         if (hitEntity == null) {
-            player.sendMessage(ChatColor.AQUA + "ボールははずれた・・・");
             dropPokeBall(player);
+            player.sendMessage(messagePrefix + messageManager.getMessage(player, "capture.failed.missed"));
             return;
         }
         // 人に当てた場合
         if (hitEntity instanceof Player) {
-            player.sendMessage(ChatColor.AQUA + "ほかのプレイヤーを捕まえることはできません。");
             dropPokeBall(player);
+            player.sendMessage(messagePrefix + messageManager.getMessage(player, "capture.failed.otherplayer"));
             return;
         }
 		String playerUUID = player.getUniqueId().toString();
@@ -92,15 +94,16 @@ public class ProjectileHitListener implements Listener {
         EntityType type = hitEntity.getType();
         List<String> whitelist = plugin.getConfigMapList().get("captureWhitelist");
         if (whitelist.stream().noneMatch(name -> name.equalsIgnoreCase(type.name()))) {
-            player.sendMessage(ChatColor.AQUA + "捕まえられないようだ・・・");
             dropPokeBall(player);
+            player.sendMessage(messagePrefix + messageManager.getMessage(player, "capture.failed.notinwhitelist"));
             return;
         }
 
         // シリアライズ可能なハンドラーが登録されているか
         if (!CaptureHandlerRegistry.isSupported(type)) {
-            player.sendMessage(ChatColor.AQUA + "そのモブはまだ捕獲できないようだ…");
+
             dropPokeBall(player);
+            player.sendMessage(messagePrefix + messageManager.getMessage(player, "capture.failed.notauth"));
             return;
         }
 
@@ -108,16 +111,16 @@ public class ProjectileHitListener implements Listener {
 
         //Condition未登録の場合
         if (optionalCondition.isEmpty()) {
-            player.sendMessage("このMobはまだ捕獲に対応していません");
             dropPokeBall(player);
+            player.sendMessage(messagePrefix + messageManager.getMessage(player, "capture.failed.notauth"));
             return;
         }
 
         //捕獲判定
         CaptureCondition condition = optionalCondition.get();
         if (!condition.canCapture(hitEntity, player)) {
-            player.sendMessage("このMobは捕獲できません");
             dropPokeBall(player);
+            player.sendMessage(messagePrefix + messageManager.getMessage(player, "capture.failed.donthavepermission"));
             return;
         }
 
@@ -146,6 +149,7 @@ public class ProjectileHitListener implements Listener {
             world.spawnParticle(Particle.END_ROD, loc, 10, 0.1, 0.1, 0.1, 0.01);
         }
         // 元のエンティティを削除
+        player.sendMessage(messagePrefix + messageManager.getMessage(player, "capture.success","pet",petName));
         hitEntity.remove();
     }
 
@@ -153,6 +157,8 @@ public class ProjectileHitListener implements Listener {
 	 * リリース処理：捕獲済みポケボールが命中した時に呼ばれる
 	 */
 	private void pokeBallRelease(Player player, Egg egg) {
+        MessageManager messageManager = plugin.getMessageManager();
+        String messagePrefix = messageManager.getMessage(player, "pokeball.prefix");
 		PokeBallKeys pokeBallKeys = plugin.getPokeBallKeys();
 		String json = pokeBallKeys.getProjectileNbtString(egg);
 		String entityTypeName = pokeBallKeys.getProjectileEntityType(egg); // "WOLF"など
@@ -161,13 +167,13 @@ public class ProjectileHitListener implements Listener {
 		try {
 			entityType = EntityType.valueOf(entityTypeName);
 		} catch (IllegalArgumentException ex) {
-			player.sendMessage(ChatColor.RED + "不明なエンティティタイプです。");
+            player.sendMessage(messagePrefix + messageManager.getMessage(player, "release.failed.unknowntype"));
 			return;
 		}
 
 		// 登録済みのハンドラーがあるかチェック
 		if (!CaptureHandlerRegistry.isSupported(entityType)) {
-			player.sendMessage(ChatColor.RED + "このモブはリリースできません。");
+			player.sendMessage(messagePrefix + messageManager.getMessage(player, "release.failed.notauth"));
 			return;
 		}
 
@@ -176,7 +182,7 @@ public class ProjectileHitListener implements Listener {
 		// デシリアライズ → EntityData を得る
 		EntityData entityData = handler.deserialize(json);
 		if (entityData == null) {
-			player.sendMessage(ChatColor.RED + "データの復元に失敗しました。");
+			player.sendMessage(messagePrefix + messageManager.getMessage(player, "release.failed.deserializeerror"));
 			return;
 		}
 
@@ -195,7 +201,7 @@ public class ProjectileHitListener implements Listener {
         }
 
         dropPokeBall(player);
-		player.sendMessage(Component.text(petName + "を呼び出した!",NamedTextColor.AQUA));
+        player.sendMessage(messagePrefix + messageManager.getMessage(player, "release.success","pet",petName));
 		spawnWorld.spawnParticle(Particle.EXPLOSION, spawnLoc, 10);
 		spawnWorld.spawnParticle(Particle.SMOKE, spawnLoc, 20, 0.2, 0.2, 0.2, 0.01);
 		spawnWorld.spawnParticle(Particle.FIREWORK, spawnLoc, 20, 0.2, 0.4, 0.2, 0.05);

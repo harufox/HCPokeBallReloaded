@@ -15,9 +15,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import jp.haruserver.mc.hcpokeball.HCPokeBall;
+import jp.haruserver.mc.hcpokeball.util.MessageManager;
 import jp.haruserver.mc.hcpokeball.util.PokeBallKeys;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+
 
 
 public class PlayerInteractListener implements Listener{
@@ -51,9 +51,12 @@ public class PlayerInteractListener implements Listener{
 
         String playerUUID = player.getUniqueId().toString();
         String ownerUUID = pokeBallKeys.getOwnerUUID(item);
+        MessageManager messageManager = plugin.getMessageManager();
+        String messagePrefix = messageManager.getMessage(player, "pokeball.prefix");
         //使用者UUIDとオーナーUUIDの一致確認
         if(!ownerUUID.equals(playerUUID)){
-            player.sendMessage(Component.text("あなたのPokeBallではないようだ",NamedTextColor.AQUA));
+            player.sendMessage(messagePrefix + messageManager.getMessage(player, "pokeball.notyourball"));
+            event.setCancelled(true);
             return;
         }
 

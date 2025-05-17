@@ -23,6 +23,7 @@ import jp.haruserver.mc.hcpokeball.listener.PrepareItemCraftListener;
 import jp.haruserver.mc.hcpokeball.listener.ProjectileHitListener;
 import jp.haruserver.mc.hcpokeball.util.CustomConfig;
 import jp.haruserver.mc.hcpokeball.util.ItemManager;
+import jp.haruserver.mc.hcpokeball.util.MessageManager;
 import jp.haruserver.mc.hcpokeball.util.PokeBallKeys;
 
 public class HCPokeBall  extends JavaPlugin{
@@ -36,6 +37,7 @@ public class HCPokeBall  extends JavaPlugin{
 	//ユーティリティクラスロード
 	ItemManager im = new ItemManager(this);
 	PokeBallKeys pbk = new PokeBallKeys(this);
+	MessageManager msm = new MessageManager(this);
 
 	private static Plugin plugin;
 	
@@ -130,4 +132,7 @@ public class HCPokeBall  extends JavaPlugin{
 	public HashMap<String,List<String>> getConfigMapList(){
 		return this.configListMap;
 	}
+    public MessageManager getMessageManager() {
+        return this.msm;
+    }
 }
