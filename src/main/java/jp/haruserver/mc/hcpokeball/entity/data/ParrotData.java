@@ -12,6 +12,8 @@ public class ParrotData implements EntityData {
     public boolean adult;
     public boolean hasCustomName;
     public double health;
+
+    //種族
     public String variant;
 
     @Override

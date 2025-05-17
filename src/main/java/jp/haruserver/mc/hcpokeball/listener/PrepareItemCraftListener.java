@@ -26,21 +26,21 @@ public class PrepareItemCraftListener implements Listener {
         ShapedRecipe recipe = (ShapedRecipe) event.getRecipe();
         NamespacedKey recipeKey = recipe.getKey();
 
-        // PokéBallレシピかどうか判定
+        //PokéBallレシピかどうか判定
         if (!recipeKey.getKey().equals("pokeball")) return;
 
-        // プレイヤー取得（クラフトビューアーの一人目＝クラフトしたプレイヤー）
+        //プレイヤー取得（クラフトビューアーの一人目＝クラフトしたプレイヤー）
         if (!(event.getView().getPlayer() instanceof Player player)) return;
 
         ItemStack result = event.getInventory().getResult();
         if (result == null) return;
 
-        // ownerUUID を設定して上書き
+        //ownerUUID を設定して上書き
         PokeBallKeys pokeBallKeys = plugin.getPokeBallKeys();
         String playerUUID = player.getUniqueId().toString();
         pokeBallKeys.setOwnerUUID(result, playerUUID);
 
-        // 結果に反映（Inventoryクリック時の結果スロットを書き換える）
+        //結果に反映（Inventoryクリック時の結果スロットを書き換える）
         event.getInventory().setResult(result);
 
     }

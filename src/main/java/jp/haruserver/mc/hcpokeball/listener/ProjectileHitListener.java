@@ -26,7 +26,6 @@ import jp.haruserver.mc.hcpokeball.registry.CaptureHandlerRegistry;
 import jp.haruserver.mc.hcpokeball.util.ItemManager;
 import jp.haruserver.mc.hcpokeball.util.MessageManager;
 import jp.haruserver.mc.hcpokeball.util.PokeBallKeys;
-import jp.haruserver.mc.hcpokeball.util.mapper.EggMaterialMapper;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class ProjectileHitListener implements Listener {
@@ -76,13 +75,13 @@ public class ProjectileHitListener implements Listener {
         ItemManager itemManager = plugin.getItemManager();
         String messagePrefix = messageManager.getMessage(player, "pokeball.prefix");
 
-        // 外れた場合（何にも当たらなかった）
+        //外れた場合（何にも当たらなかった）
         if (hitEntity == null) {
             dropPokeBall(player);
             player.sendMessage(messagePrefix + messageManager.getMessage(player, "capture.failed.missed"));
             return;
         }
-        // 人に当てた場合
+        //人に当てた場合
         if (hitEntity instanceof Player) {
             dropPokeBall(player);
             player.sendMessage(messagePrefix + messageManager.getMessage(player, "capture.failed.otherplayer"));
@@ -90,7 +89,7 @@ public class ProjectileHitListener implements Listener {
         }
 		String playerUUID = player.getUniqueId().toString();
 
-        // ホワイトリストによる制限（configで定義）
+        //ホワイトリストによる制限（configで定義）
         EntityType type = hitEntity.getType();
         List<String> whitelist = plugin.getConfigMapList().get("captureWhitelist");
         if (whitelist.stream().noneMatch(name -> name.equalsIgnoreCase(type.name()))) {
@@ -99,9 +98,8 @@ public class ProjectileHitListener implements Listener {
             return;
         }
 
-        // シリアライズ可能なハンドラーが登録されているか
+        //シリアライズ可能なハンドラーが登録されているか
         if (!CaptureHandlerRegistry.isSupported(type)) {
-
             dropPokeBall(player);
             player.sendMessage(messagePrefix + messageManager.getMessage(player, "capture.failed.notauth"));
             return;
@@ -124,15 +122,15 @@ public class ProjectileHitListener implements Listener {
             return;
         }
 
-        // エンティティをJSON化して保存
+        //エンティティをJSON化して保存
         EntityCaptureHandler handler = CaptureHandlerRegistry.getHandler(type);
         String json = handler.serialize(hitEntity);
         String petName = hitEntity.getName();  // カスタム名が設定されていれば使う
         String playerDisplayName = player.getName();
 		String entityTypeString = hitEntity.getType().name();
-        Material eggMaterial = EggMaterialMapper.getEggMaterial(type);
+        Material eggMaterial = handler.getEggMaterial();
 
-        // 捕獲済みポケボールを生成し、地面にドロップ
+        //捕獲済みポケボールを生成し、地面にドロップ
         ItemStack pokeball = itemManager.createCapturedPokeBall(petName, playerDisplayName, playerUUID,entityTypeString, json, eggMaterial);
         player.getWorld().dropItem(player.getLocation(), pokeball);
 
@@ -148,7 +146,7 @@ public class ProjectileHitListener implements Listener {
             world.spawnParticle(Particle.REVERSE_PORTAL, loc, 15, 0.2, 0.2, 0.2, 0.05);
             world.spawnParticle(Particle.END_ROD, loc, 10, 0.1, 0.1, 0.1, 0.01);
         }
-        // 元のエンティティを削除
+        //元のエンティティを削除
         player.sendMessage(messagePrefix + messageManager.getMessage(player, "capture.success","pet",petName));
         hitEntity.remove();
     }
@@ -171,7 +169,7 @@ public class ProjectileHitListener implements Listener {
 			return;
 		}
 
-		// 登録済みのハンドラーがあるかチェック
+		//登録済みのハンドラーがあるかチェック
 		if (!CaptureHandlerRegistry.isSupported(entityType)) {
 			player.sendMessage(messagePrefix + messageManager.getMessage(player, "release.failed.notauth"));
 			return;
@@ -179,18 +177,18 @@ public class ProjectileHitListener implements Listener {
 
 		EntityCaptureHandler<?> handler = CaptureHandlerRegistry.getHandler(entityType);
 
-		// デシリアライズ → EntityData を得る
+		//デシリアライズ → EntityData を得る
 		EntityData entityData = handler.deserialize(json);
 		if (entityData == null) {
 			player.sendMessage(messagePrefix + messageManager.getMessage(player, "release.failed.deserializeerror"));
 			return;
 		}
 
-		// 着弾地点にスポーンさせる
+		//着弾地点にスポーンさせる
 		Location spawnLoc = egg.getLocation().add(0, 0.5, 0);
 		World spawnWorld = spawnLoc.getWorld();
 		
-		// エンティティをスポーン
+		//エンティティをスポーン
 		Entity spawnedEntity = spawnLoc.getWorld().spawn(spawnLoc, entityType.getEntityClass());
 
 		entityData.applyTo(spawnedEntity,player);

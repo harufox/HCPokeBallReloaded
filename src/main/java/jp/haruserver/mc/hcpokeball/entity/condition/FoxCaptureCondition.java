@@ -16,6 +16,7 @@ public class FoxCaptureCondition  implements CaptureCondition<Fox>{
         if (tamer != null) {
             UUID playerUUID = player.getUniqueId();
             AnimalTamer firstTamer = fox.getFirstTrustedPlayer();
+            //キツネは信頼するプレイヤーを最大二人設定可能であるためいずれも判定する
             if(firstTamer != null){
                 UUID foxFirstOwnerUUID = firstTamer.getUniqueId();
                 if (foxFirstOwnerUUID.equals(playerUUID)){

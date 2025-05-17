@@ -64,7 +64,7 @@ public class MessageManager {
 
     private String getPlayerLanguage(Player player) {
         try {
-            return player.locale().getLanguage(); // 例: "ja"
+            return player.locale().getLanguage();
         } catch (Exception e) {
             return defaultLanguage;
         }

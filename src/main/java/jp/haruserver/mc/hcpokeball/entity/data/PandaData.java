@@ -15,8 +15,14 @@ public class PandaData implements EntityData {
     public boolean hasCustomName;
     public boolean adult;
     public double health;
+
+    //最大体力
     public double maxHealth;
+
+    //顕性遺伝子
     public String mainGene;
+    
+    //潜性遺伝子
     public String hiddenGene;
 
     @Override

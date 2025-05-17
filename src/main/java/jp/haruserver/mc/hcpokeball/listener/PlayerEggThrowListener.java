@@ -27,7 +27,5 @@ public class PlayerEggThrowListener implements Listener {
 
         e.setHatching(false); // ひよこが出ないようにする
         e.setNumHatches((byte) 0); // 安全対策
-
-
     }
 }

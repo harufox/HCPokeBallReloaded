@@ -30,7 +30,7 @@ public class ItemManager {
 		pokeballmeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		pokeballmeta.setUnbreakable(true);
 
-		// アイテム名を設定
+		//アイテム名を設定
 		String itemName = "PokeBall";
 		pokeballmeta.displayName(Component.text(itemName, NamedTextColor.AQUA));
 		pokeBall.setItemMeta(pokeballmeta);
@@ -57,7 +57,7 @@ public class ItemManager {
 		pokeballmeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		pokeballmeta.setUnbreakable(true);
 
-		// アイテム名を設定
+		//アイテム名を設定
 		pokeballmeta.displayName(Component.text(petName + " が入ったPokeBall", NamedTextColor.AQUA));
 		pokeBall.setItemMeta(pokeballmeta);
 		pokeBallKeys.setOwnerUUID(pokeBall, playerUUID);
@@ -75,12 +75,12 @@ public class ItemManager {
         ItemMeta meta = item.getItemMeta();
         List<Component> lore = meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
 
-        // lore のサイズが lineNumber に満たない場合、空行で補完
+        //lore のサイズが lineNumber に満たない場合、空行で補完
         while (lore.size() < lineNumber) {
             lore.add(Component.empty());
         }
 
-        // 指定行（0ベースで lineNumber - 1）にテキスト設定
+        //指定行（0ベースで lineNumber - 1）にテキスト設定
         lore.set(lineNumber - 1, lineText);
 
         meta.lore(lore);

@@ -8,7 +8,7 @@ import jp.haruserver.mc.hcpokeball.contract.CaptureCondition;
 public class ArmadilloCaptureCondition implements CaptureCondition<Armadillo>{
     @Override
     public boolean canCapture(Armadillo armadillo, Player player) {
-        // 野生ならOK
+        //野生ならOK
         return true;
     }
 }

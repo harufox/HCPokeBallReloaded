@@ -8,7 +8,7 @@ import jp.haruserver.mc.hcpokeball.contract.CaptureCondition;
 public class AxolotlCaptureCondition implements CaptureCondition<Axolotl>{
     @Override
     public boolean canCapture(Axolotl axolotl, Player player) {
-        // 野生ならOK
+        //野生ならOK
         return true;
     }
 }

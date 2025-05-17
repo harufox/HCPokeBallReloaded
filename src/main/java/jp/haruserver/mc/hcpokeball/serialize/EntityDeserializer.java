@@ -11,7 +11,6 @@ public class EntityDeserializer {
     private static final Gson gson = new Gson();
 
     public static EntityData fromJson(String json) {
-        // 一時的にtypeだけ読む
         JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
         String type = obj.get("type").getAsString();
 
