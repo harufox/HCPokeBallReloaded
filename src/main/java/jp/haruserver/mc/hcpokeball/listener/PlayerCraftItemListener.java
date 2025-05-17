@@ -27,18 +27,18 @@ public class PlayerCraftItemListener  implements Listener {
         ShapedRecipe recipe = (ShapedRecipe) event.getRecipe();
         NamespacedKey recipeKey = recipe.getKey();
 
-        // PokéBallレシピかどうか判定
+        //PokéBallレシピかどうか判定
         if (!recipeKey.getKey().equals("pokeball")) return;
 
         Player player = (Player) event.getWhoClicked();
         ItemStack result = event.getCurrentItem();
 
-        // ownerUUID を設定して上書き
+        //ownerUUID を設定して上書き
         PokeBallKeys pokeBallKeys = plugin.getPokeBallKeys();
         String playerUUID = player.getUniqueId().toString();
         pokeBallKeys.setOwnerUUID(result, playerUUID);
 
-        // 結果に反映（Inventoryクリック時の結果スロットを書き換える）
+        //結果に反映（Inventoryクリック時の結果スロットを書き換える）
         event.setCurrentItem(result);
     }
 }

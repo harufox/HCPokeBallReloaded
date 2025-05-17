@@ -17,7 +17,11 @@ public class WolfData implements EntityData {
     public boolean adult;
     public boolean hasCustomName;
     public double health;
+
+    //首輪の色
     public String collarColor;
+
+    //種族
     public String variant;
     public String inventoryBase64;
 

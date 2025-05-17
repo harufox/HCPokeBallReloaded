@@ -73,13 +73,13 @@ public class PlayerInteractListener implements Listener{
     private void playerThrowSpawnEgg(Player player,ItemStack item,PlayerInteractEvent event){
         PokeBallKeys pokeBallKeys = plugin.getPokeBallKeys();
     
-        // 卵を投げる（方向調整付き）
+        //卵を投げる
 		Location loc = player.getLocation();
 		Vector vec = loc.getDirection();
 		Egg egg = player.launchProjectile(Egg.class,vec);
         egg.setShooter(player);
         String playerUUID = player.getUniqueId().toString();
-        // NBT読み取り
+        //NBT読み取り
         String NBTString = pokeBallKeys.getNbtString(item);
         String entityTypeString = pokeBallKeys.getEntityType(item);
         pokeBallKeys.setProjectileOwnerUUID(egg,playerUUID);
@@ -88,7 +88,7 @@ public class PlayerInteractListener implements Listener{
 
         Bukkit.getServer().getLogger().info("ペット召喚:" + playerUUID + "|" + NBTString + "|" + entityTypeString);
 
-        // アイテムを1つ減らす
+        //アイテムを1つ減らす
         if (player.getGameMode() != GameMode.CREATIVE) {
             item.setAmount(item.getAmount() - 1);
         }

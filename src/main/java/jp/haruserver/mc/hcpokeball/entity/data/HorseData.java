@@ -18,11 +18,18 @@ public class HorseData implements EntityData {
     public boolean hasCustomName;
     public boolean adult;
     public double health;
-    public double maxHealth;
-    public double jumpStrength;
     public boolean isTamed;
+
+    //最大体力
+    public double maxHealth;
+
+    //ジャンプ力
+    public double jumpStrength;
+
+    //体色および模様
     public String color;
     public String style;
+    
     public String inventoryBase64;
 
     @Override

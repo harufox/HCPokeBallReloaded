@@ -18,8 +18,14 @@ public class FoxData implements EntityData {
     public boolean adult;
     public boolean hasCustomName;
     public double health;
+
+    //種族
     public String variant;
+
+    //口に物を加えることがあるためインベントリを持つ
     public String inventoryBase64;
+
+    //信頼しているプレイヤーたちのUUID
     public String firstOwnerUUID;
     public String secondOwnerUUID;
 

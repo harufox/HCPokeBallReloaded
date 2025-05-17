@@ -15,13 +15,14 @@ public class CamelData implements EntityData {
     public boolean hasCustomName;
     public boolean adult;
     public double health;
-    public double maxHealth;
-    public double jumpStrength;
     public boolean isTamed;
-    public String color;
-    public String style;
+
+    //最大体力
+    public double maxHealth;
+    //ジャンプ力
+    public double jumpStrength;
+
     public String inventoryBase64;
-    public boolean hasLeftHorn;
 
     @Override
     public String getType() {

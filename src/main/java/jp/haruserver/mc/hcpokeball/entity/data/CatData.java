@@ -14,7 +14,10 @@ public class CatData implements EntityData {
     public boolean adult;
     public boolean hasCustomName;
     public double health;
+
+    //首輪の色
     public String collarColor;
+    //模様
     public String catType;
 
 

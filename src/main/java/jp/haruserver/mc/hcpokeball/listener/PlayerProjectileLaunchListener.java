@@ -24,10 +24,10 @@ public class PlayerProjectileLaunchListener implements Listener{
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         Projectile projectile = event.getEntity();
 
-        // 卵（Egg）のみ対象
+        //卵（Egg）のみ対象
         if (!(projectile instanceof Egg)) return;
 
-        // プレイヤーが投げたかチェック
+        //プレイヤーが投げたかチェック
         if (!(projectile.getShooter() instanceof Player)) return;
 
         Player player = (Player) projectile.getShooter();
@@ -44,7 +44,7 @@ public class PlayerProjectileLaunchListener implements Listener{
 
         if(!pokeBallKeys.hasOwnerUUID(playerHand)) return;
 
-        // NBTにオーナーUUIDを埋め込む
+        //NBTにオーナーUUIDを埋め込む
         String ownerUUID = pokeBallKeys.getOwnerUUID(playerHand);
         pokeBallKeys.setProjectileOwnerUUID(egg, ownerUUID);
 

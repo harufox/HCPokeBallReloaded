@@ -16,12 +16,20 @@ public class LlamaData implements EntityData {
     public boolean hasCustomName;
     public boolean adult;
     public double health;
-    public double maxHealth;
     public boolean isTamed;
+
+    //最大体力
+    public double maxHealth;
+
+    //チェストを運んでいるか
     public boolean isCarryingChest;
     public String bodyBase64;
     public String inventoryBase64;
+
+    //チェストサイズにかかわる強さ
     public int strength;
+
+    //体色
     public String color;
 
     @Override
