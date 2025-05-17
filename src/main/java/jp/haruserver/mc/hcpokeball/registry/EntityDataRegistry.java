@@ -4,15 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.haruserver.mc.hcpokeball.contract.EntityData;
-import jp.haruserver.mc.hcpokeball.entity.data.CamelData;
-import jp.haruserver.mc.hcpokeball.entity.data.CatData;
-import jp.haruserver.mc.hcpokeball.entity.data.DonkeyData;
-import jp.haruserver.mc.hcpokeball.entity.data.FoxData;
-import jp.haruserver.mc.hcpokeball.entity.data.HorseData;
-import jp.haruserver.mc.hcpokeball.entity.data.LlamaData;
-import jp.haruserver.mc.hcpokeball.entity.data.PandaData;
-import jp.haruserver.mc.hcpokeball.entity.data.ParrotData;
-import jp.haruserver.mc.hcpokeball.entity.data.WolfData;
+import jp.haruserver.mc.hcpokeball.entity.data.*;
 
 public class EntityDataRegistry {
     private static final Map<String, Class<? extends EntityData>> registry = new HashMap<>();
@@ -27,6 +19,17 @@ public class EntityDataRegistry {
         register("PANDA", PandaData.class);
         register("FOX", FoxData.class);
         register("LLAMA", LlamaData.class);
+        register("GOAT", GoatData.class);
+        register("COW", CowData.class);
+        register("MOOSHROOM", MushroomCowData.class);
+        register("CHICKEN", ChickenData.class);
+        register("SHEEP", SheepData.class);
+        register("PIG", PigData.class);
+        register("RABBIT", RabbitData.class);
+        register("AXOLOTL", AxolotlData.class);
+        register("ARMADILLO", ArmadilloData.class);
+        register("POLAR_BEAR", PolarBearData.class);
+        register("FROG", FrogData.class);
     }
 
     public static void register(String type, Class<? extends EntityData> clazz) {

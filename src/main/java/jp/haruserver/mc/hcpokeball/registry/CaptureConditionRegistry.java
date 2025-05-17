@@ -7,15 +7,7 @@ import java.util.Optional;
 import org.bukkit.entity.EntityType;
 
 import jp.haruserver.mc.hcpokeball.contract.CaptureCondition;
-import jp.haruserver.mc.hcpokeball.entity.condition.WolfCaptureCondition;
-import jp.haruserver.mc.hcpokeball.entity.condition.CatCaptureCondition;
-import jp.haruserver.mc.hcpokeball.entity.condition.HorseCaptureCondition;
-import jp.haruserver.mc.hcpokeball.entity.condition.ParrotCaptureCondition;
-import jp.haruserver.mc.hcpokeball.entity.condition.DonkeyCaptureCondition;
-import jp.haruserver.mc.hcpokeball.entity.condition.FoxCaptureCondition;
-import jp.haruserver.mc.hcpokeball.entity.condition.CamelCaptureCondition;
-import jp.haruserver.mc.hcpokeball.entity.condition.PandaCaptureCondition;
-import jp.haruserver.mc.hcpokeball.entity.condition.LlamaCaptureCondition;
+import jp.haruserver.mc.hcpokeball.entity.condition.*;
 
 public class CaptureConditionRegistry {
     private static final Map<EntityType, CaptureCondition> conditions = new HashMap<>();
@@ -30,6 +22,17 @@ public class CaptureConditionRegistry {
         conditions.put(EntityType.PANDA, new PandaCaptureCondition());
         conditions.put(EntityType.FOX, new FoxCaptureCondition());
         conditions.put(EntityType.LLAMA, new LlamaCaptureCondition());
+        conditions.put(EntityType.GOAT, new GoatCaptureCondition());
+        conditions.put(EntityType.COW, new CowCaptureCondition());
+        conditions.put(EntityType.MOOSHROOM, new MushroomCowCaptureCondition());
+        conditions.put(EntityType.CHICKEN, new ChickenCaptureCondition());
+        conditions.put(EntityType.SHEEP, new SheepCaptureCondition());
+        conditions.put(EntityType.PIG, new PigCaptureCondition());
+        conditions.put(EntityType.RABBIT, new RabbitCaptureCondition());
+        conditions.put(EntityType.AXOLOTL, new AxolotlCaptureCondition());
+        conditions.put(EntityType.ARMADILLO, new ArmadilloCaptureCondition());
+        conditions.put(EntityType.POLAR_BEAR, new PolarBearCaptureCondition());
+        conditions.put(EntityType.FROG, new FrogCaptureCondition());
     }
 
     public static Optional<CaptureCondition> getCondition(EntityType type) {

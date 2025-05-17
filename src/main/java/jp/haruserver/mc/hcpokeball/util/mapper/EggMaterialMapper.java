@@ -11,6 +11,7 @@ public class EggMaterialMapper {
 
     static {
         eggMap.put(EntityType.ALLAY, Material.ALLAY_SPAWN_EGG);
+        eggMap.put(EntityType.ARMADILLO, Material.ARMADILLO_SPAWN_EGG);
         eggMap.put(EntityType.AXOLOTL, Material.AXOLOTL_SPAWN_EGG);
         eggMap.put(EntityType.BAT, Material.BAT_SPAWN_EGG);
         eggMap.put(EntityType.BEE, Material.BEE_SPAWN_EGG);

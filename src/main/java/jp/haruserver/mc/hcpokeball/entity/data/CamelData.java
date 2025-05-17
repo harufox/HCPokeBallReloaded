@@ -21,6 +21,7 @@ public class CamelData implements EntityData {
     public String color;
     public String style;
     public String inventoryBase64;
+    public boolean hasLeftHorn;
 
     @Override
     public String getType() {
